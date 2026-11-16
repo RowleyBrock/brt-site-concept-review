@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A people-first public website design exploration for Behavioral Research and Teaching at the University of Oregon.">
+  <title>People-First Design Exploration | BRT</title>
+  <style>
+    :root {
+      --ink: #102f3b;
+      --navy: #082d3a;
+      --teal: #087d78;
+      --uo-green: #007030;
+      --uo-yellow: #fee11a;
+      --evergreen: #004d30;
+      --lichen: #e8f1d9;
+      --limestone: #f8f2e8;
+      --fog: #e1f1f6;
+      --white: #fff;
+      --muted: #53666d;
+      --line: #ccd9d8;
+      --focus: #f5a604;
+      --shadow: 0 18px 50px rgba(8, 45, 58, .12);
+      --radius: 1.25rem;
+      --max: 76rem;
+      --sans: "Source Sans 3", "Source Sans Pro", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --serif: Newsreader, Georgia, serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; color: var(--ink); background: var(--white); font-family: var(--sans); line-height: 1.55; }
+    img, svg { display: block; max-width: 100%; }
+    a { color: inherit; text-underline-offset: .22em; text-decoration-thickness: .08em; }
+    a:hover { text-decoration-thickness: .14em; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    :focus-visible { outline: .22rem solid var(--focus); outline-offset: .22rem; }
+    .skip { position: fixed; top: .5rem; left: .5rem; z-index: 100; padding: .7rem 1rem; background: var(--uo-yellow); color: #000; transform: translateY(-150%); }
+    .skip:focus { transform: none; }
+    .container { width: min(calc(100% - 2rem), var(--max)); margin-inline: auto; }
+    .uo-bar { padding: .42rem 1rem; color: #fff; background: var(--uo-green); font-size: .78rem; font-weight: 750; letter-spacing: .02em; }
+    .uo-bar .container { display: flex; justify-content: space-between; gap: 1rem; }
+    .site-header { position: relative; z-index: 10; border-bottom: 1px solid rgba(255,255,255,.16); background: var(--navy); color: #fff; }
+    .header-inner { min-height: 5rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+    .brand { display: inline-flex; align-items: center; gap: .8rem; text-decoration: none; }
+    .brand-mark { display: grid; place-items: center; width: 3.05rem; aspect-ratio: 1; border-radius: 50%; background: var(--uo-yellow); color: #000; font-size: 1rem; font-weight: 900; letter-spacing: -.04em; }
+    .brand-copy { display: grid; font-size: .76rem; line-height: 1.2; color: #c9dcdf; }
+    .brand-copy strong { color: #fff; font-size: .98rem; }
+    .nav-toggle { display: none; border: 1px solid #8bb2b8; border-radius: .4rem; padding: .55rem .75rem; color: #fff; background: transparent; font: inherit; font-weight: 700; }
+    nav ul { display: flex; align-items: center; gap: 1.4rem; list-style: none; margin: 0; padding: 0; }
+    nav a { color: #fff; font-size: .92rem; font-weight: 700; text-decoration: none; }
+    nav a:not(.nav-cta):hover { color: var(--uo-yellow); }
+    .nav-cta { padding: .65rem .95rem; border-radius: 999px; background: var(--uo-yellow); color: #000; }
+    .nav-group { position: relative; }
+    .nav-group summary { cursor: pointer; color: #fff; font-size: .92rem; font-weight: 700; list-style: none; }
+    .nav-group summary::-webkit-details-marker { display: none; }
+    .nav-group summary::after { margin-left: .35rem; content: "▾"; color: var(--uo-yellow); }
+    .nav-group[open] summary::after { content: "▴"; }
+    .subnav { position: absolute; top: calc(100% + 1rem); right: 0; z-index: 12; width: 21rem; padding: .65rem !important; border: 1px solid #58747a; border-radius: .75rem; background: #fff; box-shadow: var(--shadow); }
+    .subnav li + li { border-top: 1px solid var(--line); }
+    .subnav a { display: block; padding: .7rem; color: var(--ink); }
+    .subnav a:hover { color: var(--uo-green) !important; background: var(--lichen); }
+    .hero { overflow: hidden; background: var(--navy); color: #fff; }
+    .hero-grid { min-height: 43rem; display: grid; grid-template-columns: minmax(0, .94fr) minmax(28rem, 1.06fr); align-items: center; gap: clamp(2rem, 5vw, 6rem); }
+    .hero-copy { position: relative; z-index: 2; padding-block: clamp(4rem, 8vw, 7.5rem); }
+    .eyebrow { margin: 0 0 1rem; color: var(--teal); font-size: .78rem; font-weight: 900; letter-spacing: .13em; text-transform: uppercase; }
+    .hero .eyebrow { color: var(--uo-yellow); }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 12ch; margin-bottom: 1.4rem; font-family: var(--serif); font-size: clamp(3.4rem, 6.8vw, 6.5rem); font-weight: 500; letter-spacing: -.055em; line-height: .91; }
+    h2 { margin-bottom: 1.2rem; font-family: var(--serif); font-size: clamp(2.35rem, 4.6vw, 4.6rem); font-weight: 500; letter-spacing: -.04em; line-height: 1; }
+    h3 { margin-bottom: .65rem; font-size: 1.28rem; line-height: 1.2; }
+    .hero-lead { max-width: 38rem; margin-bottom: 2rem; color: #dbe8e9; font-size: clamp(1.15rem, 1.8vw, 1.42rem); }
+    .button-row { display: flex; flex-wrap: wrap; gap: .75rem; }
+    .button { display: inline-flex; min-height: 3rem; align-items: center; justify-content: center; border: 2px solid var(--uo-yellow); border-radius: 999px; padding: .72rem 1.2rem; background: var(--uo-yellow); color: #000; font-weight: 850; text-decoration: none; }
+    .button.secondary { background: transparent; color: #fff; }
+    .button.dark { border-color: var(--navy); background: var(--navy); color: #fff; }
+    .hero-media { position: relative; align-self: stretch; min-height: 36rem; }
+    .photo-placeholder { position: relative; overflow: hidden; display: grid; place-items: center; min-height: 18rem; border: 2px dashed currentColor; color: #466269; background: var(--fog); }
+    .photo-placeholder::before { position: absolute; inset: 0; content: ""; opacity: .56; background: linear-gradient(140deg, transparent 48%, currentColor 49%, currentColor 50%, transparent 51%); }
+    .photo-label { position: relative; z-index: 1; max-width: 24rem; margin: 1rem; padding: .9rem 1rem; border-radius: .5rem; background: rgba(255,255,255,.92); color: var(--ink); font-size: .82rem; text-align: center; box-shadow: 0 8px 22px rgba(0,0,0,.12); }
+    .photo-label strong { display: block; margin-bottom: .3rem; color: var(--uo-green); font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; }
+    .hero-photo { position: absolute; inset: 2.5rem 0 0; min-height: auto; border: 0; border-radius: 12rem 0 0 0; color: #99b4b8; background: #bcd4d5; }
+    .hero-photo::after { position: absolute; right: -20%; bottom: -28%; width: 32rem; aspect-ratio: 1; border: 5rem solid var(--uo-yellow); border-radius: 50%; content: ""; opacity: .88; }
+    .hero-photo .photo-label { align-self: end; justify-self: start; margin: 0 0 2rem 2rem; }
+    .section { padding-block: clamp(4.5rem, 8vw, 8rem); }
+    .section-head { max-width: 52rem; margin-bottom: clamp(2rem, 4vw, 3.4rem); }
+    .section-head p:last-child, .intro-copy { color: var(--muted); font-size: 1.16rem; }
+    .intro-grid { display: grid; grid-template-columns: minmax(0, .85fr) minmax(26rem, 1.15fr); gap: clamp(3rem, 8vw, 8rem); align-items: start; }
+    .intro-pull { padding-left: 1.5rem; border-left: .42rem solid var(--uo-yellow); font-family: var(--serif); font-size: clamp(1.55rem, 3vw, 2.5rem); line-height: 1.18; }
+    .paper { background: var(--limestone); }
+    .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+    .person-card { overflow: hidden; border-radius: var(--radius); background: #fff; box-shadow: var(--shadow); }
+    .person-card .photo-placeholder { aspect-ratio: 4/3; min-height: 0; border-width: 0 0 2px; border-color: #8ba4a6; }
+    .person-copy { padding: 1.25rem; }
+    .person-copy p { color: var(--muted); }
+    .person-role { min-height: 2.65rem; color: var(--uo-green) !important; font-size: .85rem; font-weight: 850; }
+    .person-tags { display: flex; flex-wrap: wrap; gap: .35rem; margin: .85rem 0; }
+    .person-tags span { padding: .24rem .48rem; border-radius: 999px; background: var(--lichen); color: var(--evergreen); font-size: .73rem; font-weight: 750; }
+    .person-card details { border-top: 1px solid var(--line); padding-top: .75rem; }
+    .person-card summary { cursor: pointer; font-weight: 850; }
+    .person-card dl { margin-bottom: 0; font-size: .86rem; }
+    .person-card dt { margin-top: .75rem; color: var(--uo-green); font-weight: 850; }
+    .person-card dd { margin: .15rem 0 0; color: var(--muted); }
+    .person-copy small { display: block; margin-top: .9rem; color: #68777b; }
+    .story { display: grid; grid-template-columns: 1.15fr .85fr; border-radius: calc(var(--radius) * 1.2); overflow: hidden; background: var(--navy); color: #fff; box-shadow: var(--shadow); }
+    .story .photo-placeholder { min-height: 34rem; border: 0; color: #7d9ca0; background: #b7cccd; }
+    .story-copy { display: flex; flex-direction: column; justify-content: center; padding: clamp(2rem, 5vw, 4.5rem); }
+    .story-copy h2 { font-size: clamp(2.2rem, 4vw, 3.8rem); }
+    .story-copy p { color: #d7e4e5; }
+    .story-evidence { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin: 1rem 0 1.4rem; }
+    .story-evidence div { padding: .9rem; border: 1px solid #53747b; border-radius: .65rem; background: rgba(255,255,255,.05); }
+    .story-evidence dt { color: var(--uo-yellow); font-size: .76rem; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
+    .story-evidence dd { margin: .3rem 0 0; color: #d7e4e5; font-size: .9rem; }
+    .text-link { color: var(--uo-yellow); font-weight: 850; }
+    .pathways { display: grid; grid-template-columns: .95fr 1.05fr; gap: 1rem; }
+    .pathway-card { min-height: 25rem; padding: clamp(1.5rem, 4vw, 3rem); border: 1px solid var(--line); border-radius: var(--radius); background: #fff; }
+    .pathway-card.products { color: #fff; background: var(--navy); }
+    .pathway-card.products p { color: #d7e4e5; }
+    .pathway-options { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-top: 2rem; }
+    .pathway-option { padding: 1rem; border: 1px solid #53747b; border-radius: .75rem; background: rgba(255,255,255,.06); }
+    .pathway-option h3 { font-size: 1rem; }
+    .pathway-option a { color: var(--uo-yellow); font-weight: 800; }
+    .story-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    .research-story { overflow: hidden; display: grid; grid-template-columns: .72fr 1.28fr; min-height: 25rem; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; }
+    .research-story .photo-placeholder { min-height: 100%; border: 0; border-right: 1px solid var(--line); }
+    .research-story-copy { padding: 1.5rem; }
+    .research-story-copy p { color: var(--muted); }
+    .story-meta { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1rem; }
+    .story-meta span { padding: .25rem .48rem; border-radius: .3rem; background: var(--fog); font-size: .72rem; font-weight: 800; }
+    .services { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; border: 1px solid var(--line); background: var(--line); }
+    .service { min-height: 21rem; padding: 1.5rem; background: #fff; }
+    .service-number { display: inline-grid; place-items: center; width: 2.5rem; aspect-ratio: 1; margin-bottom: 3.7rem; border-radius: 50%; background: var(--lichen); color: var(--evergreen); font-weight: 900; }
+    .service h3 { min-height: 4.65rem; font-size: 1.18rem; }
+    .service p { color: var(--muted); }
+    .service ul { margin: 1rem 0 1.4rem; padding-left: 1.1rem; color: var(--muted); font-size: .9rem; }
+    .service li + li { margin-top: .35rem; }
+    .service > a { font-weight: 850; }
+    .specialty-links { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.5rem; }
+    .specialty-links a { padding: .55rem .8rem; border: 1px solid var(--line); border-radius: 999px; background: #fff; font-size: .82rem; font-weight: 800; text-decoration: none; }
+    .specialty-links a:hover { border-color: var(--uo-green); color: var(--uo-green); }
+    .specialty { background: var(--evergreen); color: #fff; }
+    .specialty-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(3rem, 7vw, 7rem); align-items: start; }
+    .sticky { position: sticky; top: 2rem; }
+    .specialty .eyebrow, .specialty a { color: var(--uo-yellow); }
+    .specialty-intro { color: #d8e8df; font-size: 1.15rem; }
+    .deliverables { display: grid; gap: .8rem; }
+    .deliverable { padding: 1.4rem; border: 1px solid #4e826c; border-radius: .8rem; background: rgba(255,255,255,.055); }
+    .deliverable p { margin-bottom: 0; color: #d5e4dc; }
+    .evidence { margin-top: 1.2rem; padding: 1.2rem; border-left: .35rem solid var(--uo-yellow); background: #003c27; }
+    .evidence p:last-child { margin-bottom: 0; }
+    .life-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 1rem; }
+    .life-main { min-height: 36rem; border-radius: var(--radius); }
+    .life-stack { display: grid; gap: 1rem; }
+    .life-stack .photo-placeholder { min-height: 17.5rem; border-radius: var(--radius); }
+    .life-caption { max-width: 44rem; margin-top: 1.5rem; color: var(--muted); font-size: 1.05rem; }
+    .affiliate-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1.5rem; }
+    .affiliate { padding: 1.25rem; border: 1px solid var(--line); border-radius: .75rem; background: #fff; }
+    .affiliate p { margin-bottom: .5rem; color: var(--muted); }
+    .contact { overflow: hidden; padding-block: clamp(4rem, 7vw, 6rem); background: var(--uo-yellow); color: #000; }
+    .contact-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 4rem; align-items: end; }
+    .contact h2 { max-width: 13ch; }
+    .contact p { max-width: 42rem; font-size: 1.15rem; }
+    .contact-note { padding: 1.5rem; border: 2px solid #000; border-radius: var(--radius); }
+    .site-footer { padding-block: 3rem; background: #071f27; color: #c8d9db; }
+    .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 2rem; }
+    .site-footer h2, .site-footer h3 { color: #fff; font-family: var(--sans); font-size: 1rem; }
+    .site-footer ul { list-style: none; margin: 0; padding: 0; }
+    .site-footer li + li { margin-top: .45rem; }
+    .site-footer a { color: #fff; }
+    .design-key { display: inline-flex; align-items: center; gap: .45rem; font-size: .78rem; }
+    .design-key::before { width: .65rem; aspect-ratio: 1; border-radius: 50%; background: var(--uo-yellow); content: ""; }
+    @media (max-width: 68rem) {
+      .hero-grid { grid-template-columns: 1fr 1fr; }
+      .cards { grid-template-columns: repeat(2, 1fr); }
+      .services { grid-template-columns: repeat(2, 1fr); }
+      .service:last-child { grid-column: 1 / -1; min-height: auto; }
+      .research-story { grid-template-columns: 1fr; }
+      .research-story .photo-placeholder { min-height: 15rem; border-right: 0; border-bottom: 1px solid var(--line); }
+    }
+    @media (max-width: 50rem) {
+      .nav-toggle { display: block; }
+      nav { position: absolute; top: 100%; left: 0; right: 0; display: none; padding: 1rem; border-top: 1px solid #41636a; background: var(--navy); }
+      nav[data-open="true"] { display: block; }
+      nav ul { align-items: stretch; flex-direction: column; }
+      nav a { display: block; padding: .55rem; }
+      .nav-group summary { padding: .55rem; }
+      .subnav { position: static; width: auto; margin-top: .4rem !important; box-shadow: none; }
+      .subnav li { width: 100%; }
+      .hero-grid, .intro-grid, .story, .specialty-grid, .life-grid, .contact-grid, .footer-grid, .pathways, .story-grid { grid-template-columns: 1fr; }
+      .story-evidence { grid-template-columns: 1fr; }
+      .hero-grid { min-height: auto; }
+      .hero-copy { padding-bottom: 2rem; }
+      .hero-media { min-height: 25rem; }
+      .hero-photo { inset: 0 -1rem; border-radius: 6rem 0 0; }
+      .story .photo-placeholder { min-height: 24rem; }
+      .sticky { position: static; }
+      .life-main { min-height: 26rem; }
+    }
+    @media (max-width: 36rem) {
+      h1 { font-size: 3.15rem; }
+      .brand-copy span { display: none; }
+      .cards, .services, .pathway-options, .affiliate-list { grid-template-columns: 1fr; }
+      .service:last-child { grid-column: auto; }
+      .person-card .photo-placeholder { aspect-ratio: 16/10; }
+      .service { min-height: auto; }
+      .service-number { margin-bottom: 2rem; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to main content</a>
+  <div class="uo-bar"><div class="container"><span>University of Oregon</span><span>College of Education research</span></div></div>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#top" aria-label="BRT home">
+        <span class="brand-mark" aria-hidden="true">BRT</span>
+        <span class="brand-copy"><strong>Behavioral Research and Teaching</strong><span>University of Oregon</span></span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="lab-nav">Menu</button>
+      <nav id="lab-nav" aria-label="Design exploration navigation">
+        <ul><li><a href="#top">Home</a></li><li><a href="../research.html">Research &amp; Scholarship</a></li><li><details class="nav-group"><summary>Products &amp; Services</summary><ul class="subnav"><li><a href="../products-services.html">Products &amp; Services overview</a></li><li><a href="../products-services.html">easyCBM / CBMSkills</a></li><li><a href="../peer-review-services.html">Peer Review &amp; State Assessment Services</a></li></ul></details></li><li><a class="nav-cta" href="#contact">Contact</a></li></ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Research made useful, together</p>
+          <h1>Better evidence starts with better questions.</h1>
+          <p class="hero-lead">BRT researchers work alongside state assessment leaders and educators to make evidence clearer, more defensible, and more useful for students.</p>
+          <div class="button-row"><a class="button" href="#services">Explore our work</a><a class="button secondary" href="#people">Meet the research team</a></div>
+        </div>
+        <div class="hero-media" aria-label="Photography placeholder">
+          <div class="photo-placeholder hero-photo" role="img" aria-label="Placeholder for an authentic photograph of BRT researchers working together">
+            <div class="photo-label"><strong>Team collaboration</strong>BRT researchers in an active working session, photographed with natural light.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container intro-grid">
+        <div><p class="eyebrow">A more personal introduction</p><h2>Serious methods. Human partnership.</h2></div>
+        <div class="intro-copy"><p>Behavioral Research and Teaching is a small University of Oregon research group in Eugene. We study student learning and academic assessment, develop tools for educators, and support the design and technical quality of state assessment systems.</p><p>Our work moves between scholarship and application. A research question may become a technical study, an assessment design, a clearer report, or a tool that helps an educator see what a student is ready to learn next.</p><p class="intro-pull">We bring curiosity to the question, care to the collaboration, and precision to the evidence.</p></div>
+      </div>
+    </section>
+
+    <section class="section paper" id="people">
+      <div class="container">
+        <div class="section-head"><p class="eyebrow">BRT research team</p><h2>Expertise has a human face.</h2><p>Our researchers connect measurement, special education, data science, assessment design, and classroom experience. Select a profile to see how published work connects to methods and services.</p></div>
+        <div class="cards">
+          <article class="person-card"><div class="photo-placeholder" role="img" aria-label="Portrait photography placeholder for Gerald Tindal"><div class="photo-label"><strong>Portrait photography</strong>Gerald Tindal</div></div><div class="person-copy"><h3>Gerald Tindal, Ph.D.</h3><p class="person-role">Professor Emeritus and Director of BRT</p><p>Gerald’s work connects decades of research on curriculum-based measurement with state assessment, alternate assessment, and the practical decisions educators make from evidence.</p><div class="person-tags"><span>Validity</span><span>Reliability</span><span>CBM</span></div><details><summary>Research connections</summary><dl><dt>Selected publications</dt><dd>State of State Accountability Programs with a Focus on Alternate Assessments; Automated Essay Scoring, Technical Report 2301.</dd><dt>Methods</dt><dd>Curriculum-based measurement, reliability, classification, validity arguments, longitudinal analysis.</dd><dt>Services</dt><dd>Participation and accessibility; psychometrics; reporting and growth.</dd><dt>Staff voice</dt><dd>Reserved for a staff-supplied quotation or personal detail.</dd></dl></details><p><a href="https://brtprojects.org/our-researchers/">Official BRT profile</a></p></div></article>
+          <article class="person-card"><div class="photo-placeholder" role="img" aria-label="Portrait photography placeholder for Julie Alonzo"><div class="photo-label"><strong>Portrait photography</strong>Julie Alonzo</div></div><div class="person-copy"><h3>Julie Alonzo, Ph.D.</h3><p class="person-role">Research Associate Professor and BRT Co-Director</p><p>Julie brings experience as an educator and researcher to questions of meaningful inclusion, teacher learning, curriculum-based measurement, and assessment alignment.</p><div class="person-tags"><span>Inclusion</span><span>Alignment</span><span>CBM</span></div><details><summary>Research connections</summary><dl><dt>Selected publications</dt><dd>The Alignment Between easyCBM Mathematics and Literacy Assessments and State and National Standards; classification-accuracy research.</dd><dt>Methods</dt><dd>Alignment review, measure development, classification accuracy, educator learning.</dd><dt>Services</dt><dd>Participation and implementation; standards and alignment.</dd><dt>Staff voice</dt><dd>Reserved for a staff-supplied quotation or personal detail.</dd></dl></details><p><a href="https://brtprojects.org/our-researchers/">Official BRT profile</a></p></div></article>
+          <article class="person-card"><div class="photo-placeholder" role="img" aria-label="Portrait photography placeholder for Brock Rowley"><div class="photo-label"><strong>Portrait photography</strong>Brock Rowley</div></div><div class="person-copy"><h3>Brock Rowley, D.Ed.</h3><p class="person-role">Senior Research Associate II and BRT Co-Director</p><p>Brock draws on research and school-leadership experience to study alternate assessment, academic growth, accommodations, and respectful accountability systems.</p><div class="person-tags"><span>ORExt</span><span>Growth</span><span>Accountability</span></div><details><summary>Research connections</summary><dl><dt>Selected publications</dt><dd>Interpreting Longitudinal Growth in Alternate Assessments Through Complementary Evidence; Oregon Extended Assessment Technical Documentation.</dd><dt>Methods</dt><dd>Growth modeling, ROC analysis, technical documentation, policy synthesis.</dd><dt>Services</dt><dd>Participation and accessibility; psychometrics; reporting and growth.</dd><dt>Staff voice</dt><dd>Reserved for a staff-supplied quotation or personal detail.</dd></dl></details><p><a href="https://brtprojects.org/our-researchers/">Official BRT profile</a></p></div></article>
+          <article class="person-card"><div class="photo-placeholder" role="img" aria-label="Portrait photography placeholder for Sevrina Tindal"><div class="photo-label"><strong>Portrait photography</strong>Sevrina Tindal</div></div><div class="person-copy"><h3>Sevrina Tindal, M.M., MT-BC</h3><p class="person-role">Senior Research Assistant I</p><p>Sevrina connects detailed test-development work with the people who administer ORExt, coordinating implementation, field assistance, essentialized standards, and alignment review.</p><div class="person-tags"><span>ORExt</span><span>Implementation</span><span>Alignment</span></div><details><summary>Research connections</summary><dl><dt>Selected publications</dt><dd>Oregon Extended Assessment Technical Documentation; Oregon Extended Assessment Linkage and Alignment Study.</dd><dt>Methods</dt><dd>Item development, distributed item review, alignment review, implementation support.</dd><dt>Services</dt><dd>Participation and implementation; standards and assessment design.</dd><dt>Staff voice</dt><dd>Reserved for a staff-supplied quotation or personal detail.</dd></dl></details><p><a href="https://brtprojects.org/our-researchers/">Official BRT profile</a></p></div></article>
+          <article class="person-card"><div class="photo-placeholder" role="img" aria-label="Portrait photography placeholder for Shawn Irvin"><div class="photo-label"><strong>Portrait photography</strong>Shawn Irvin</div></div><div class="person-copy"><h3>Shawn Irvin, Ph.D.</h3><p class="person-role">Research Associate Professor</p><p>Shawn works where measurement, instruction, technology, and equity meet, building accessible data systems and statewide alternate assessments through practitioner-centered development.</p><div class="person-tags"><span>Equity</span><span>Data systems</span><span>Design research</span></div><details><summary>Research connections</summary><dl><dt>Selected publications</dt><dd>Oregon Extended Assessment Technical Documentation; Development of the Prekindergarten Learning Receptiveness Assessment.</dd><dt>Methods</dt><dd>Quantitative and qualitative analysis, data visualization, design-based development, alignment studies.</dd><dt>Services</dt><dd>Participation; alignment and design; reporting; technology and data.</dd><dt>Staff voice</dt><dd>Reserved for a staff-supplied quotation or personal detail.</dd></dl></details><p><a href="https://brtprojects.org/our-researchers/">Official BRT profile</a></p></div></article>
+          <article class="person-card"><div class="photo-placeholder" role="img" aria-label="Portrait photography placeholder for Cengiz Zopluoglu"><div class="photo-label"><strong>Portrait photography</strong>Cengiz Zopluoglu</div></div><div class="person-copy"><h3>Cengiz Zopluoglu, Ph.D.</h3><p class="person-role">Associate Professor</p><p>Cengiz brings computational psychometrics to consequential assessment questions, from item response theory and fairness to automated scoring and test-security evidence.</p><div class="person-tags"><span>IRT</span><span>Forensics</span><span>Machine learning</span></div><details><summary>Research connections</summary><dl><dt>Selected publications</dt><dd>Simultaneous Detection of Compromised Items and Examinees with Item Preknowledge; Automated Essay Scoring, Technical Report 2301.</dd><dt>Methods</dt><dd>Response-time models, IRT, DIF, simulation, machine learning.</dd><dt>Services</dt><dd>Psychometrics and validity; assessment forensics; automated scoring; measurement fairness.</dd><dt>Staff voice</dt><dd>Reserved for a staff-supplied quotation or personal detail.</dd></dl></details><p><a href="https://education.uoregon.edu/directory/sped/all/cengiz">Official UO profile</a></p></div></article>
+          <article class="person-card"><div class="photo-placeholder" role="img" aria-label="Portrait photography placeholder for Joseph Nese"><div class="photo-label"><strong>Portrait photography</strong>Joseph Nese</div></div><div class="person-copy"><h3>Joseph F. T. Nese, Ph.D.</h3><p class="person-role">Research Professor</p><p>Joe develops and studies assessment systems that help schools use data well, pairing advanced statistical methods and data science with questions of educational access and quality.</p><div class="person-tags"><span>Measurement</span><span>Data science</span><span>Decision making</span></div><details><summary>Research connections</summary><dl><dt>Selected publications</dt><dd>Reliability Analyses for easyCBM Measures in Grades 3–8; Oregon Extended Assessment Technical Documentation.</dd><dt>Methods</dt><dd>Advanced statistical modeling, reliability, classification, computerized assessment, data science.</dd><dt>Services</dt><dd>Psychometrics; reporting and growth; technology and data management.</dd><dt>Staff voice</dt><dd>Reserved for a staff-supplied quotation or personal detail.</dd></dl></details><p><a href="https://brtprojects.org/our-researchers/">Official BRT profile</a></p></div></article>
+          <article class="person-card"><div class="photo-placeholder" role="img" aria-label="Portrait photography placeholder for Joe Swinehart"><div class="photo-label"><strong>Portrait photography</strong>Joe Swinehart</div></div><div class="person-copy"><h3>Joe Swinehart, M.S.</h3><p class="person-role">Research Assistant</p><p>Joe brings classroom experience to alternate-assessment item development and review in reading, mathematics, and science. His BRT work centers on making assessment meaningful for all learners.</p><div class="person-tags"><span>Item development</span><span>Content review</span><span>Accessibility</span></div><details><summary>Research connections</summary><dl><dt>Project evidence</dt><dd>Virginia Alternate Assessment Program item development and review.</dd><dt>Methods</dt><dd>Content review, item development, accessibility review, educator-centered implementation.</dd><dt>Services</dt><dd>Participation and accessibility; standards and assessment design.</dd><dt>Staff voice</dt><dd>Reserved for a staff-supplied quotation or personal detail.</dd></dl></details><p><a href="https://brtprojects.org/our-researchers/">Official BRT profile</a></p></div></article>
+        </div>
+        <div class="affiliate-list"><article class="affiliate"><p class="eyebrow">BRT affiliate</p><h3>Dan Farley, Ph.D.</h3><p class="person-role">Courtesy Senior Research Associate</p><p>Data justice, large-scale assessment, accountability, inclusion, accessibility, and growth modeling, including national synthesis work with BRT.</p><a href="https://brtprojects.org/our-affiliates/">Official BRT affiliate profile</a></article><article class="affiliate"><p class="eyebrow">Research community</p><h3>Students, partners, and project collaborators</h3><p>BRT projects also bring together graduate students, educators, state partners, and research collaborators. Specific contributors are named with the evidence for each project.</p><a href="https://brtprojects.org/">Explore BRT projects</a></article></div>
+      </div>
+    </section>
+
+    <section class="section" id="pathways">
+      <div class="container">
+        <div class="section-head"><p class="eyebrow">Two ways into BRT</p><h2>Follow the research, or start with the work in front of you.</h2></div>
+        <div class="pathways">
+          <article class="pathway-card"><p class="eyebrow">Research &amp; Scholarship</p><h2>Ideas, methods, and evidence.</h2><p>Browse peer-reviewed studies, technical reports, project documentation, and applied research on alternate assessment, accessibility, reliability, classification, growth, automated scoring, and assessment security.</p><p><a href="../research.html">Explore BRT research and scholarship</a></p></article>
+          <article class="pathway-card products"><p class="eyebrow">Products &amp; Services</p><h2>Tools and technical work.</h2><p>BRT’s products support educators’ day-to-day assessment decisions. Our state assessment services help agencies and partners answer focused technical questions.</p><div class="pathway-options"><div class="pathway-option"><h3>easyCBM and CBMSkills</h3><p>Research-based assessment tools for screening, progress monitoring, and skill-focused learning.</p><a href="../products-services.html">Explore BRT products</a></div><div class="pathway-option"><h3>Peer Review and State Assessment Services</h3><p>Independent technical studies, evidence development, assessment design, reporting, and review.</p><a href="../peer-review-services.html">Explore state services</a></div></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section paper" id="stories">
+      <div class="container">
+        <div class="section-head"><p class="eyebrow">Featured research stories</p><h2>Follow a question from evidence to use.</h2><p>These projects show how BRT brings researchers, educators, technical methods, and public evidence together.</p></div>
+        <article class="story">
+          <div class="photo-placeholder" role="img" aria-label="Research activity photography placeholder showing a collaborative review of Oregon Extended Assessment evidence"><div class="photo-label"><strong>Research activity</strong>Collaborative review of ORExt evidence, photographed in a real BRT work setting.</div></div>
+          <div class="story-copy"><p class="eyebrow">Oregon Extended Assessment</p><h2>Building an alternate assessment around access and evidence.</h2><p>BRT’s ORExt work connects essentialized standards, item development, digital administration, vertical scaling, technical documentation, and field support for Oregon educators.</p><dl class="story-evidence"><div><dt>Published evidence</dt><dd>Annual technical documentation addresses design, administration, scoring, alignment, validity, reliability, precision, classification, fairness, accessibility, reporting, and longitudinal interpretation.</dd></div><div><dt>People and practice</dt><dd>Brock Rowley directs the work with key support from Sevrina Tindal, analyses by Joseph Nese, and contributions from Gerald Tindal and project collaborators.</dd></div></dl><p><a class="text-link" href="https://brtprojects.org/oregon-extended/alternate-assessment-tech-reports/">Explore the ORExt technical evidence</a></p></div>
+        </article>
+        <div class="story-grid" style="margin-top:1rem">
+          <article class="research-story"><div class="photo-placeholder" role="img" aria-label="Publication visual placeholder for longitudinal growth research"><div class="photo-label"><strong>Publication visual</strong>Growth figure or report detail.</div></div><div class="research-story-copy"><div class="story-meta"><span>Growth modeling</span><span>Alternate assessment</span></div><h3>Interpreting growth through complementary evidence</h3><p>Brock Rowley and Gerald Tindal analyze ORExt records from 2014–15 through 2025–26 using scale-score movement, achievement-level transitions, progress toward proficiency, reliable-growth classifications, and multi-year patterns.</p><p><strong>Documented contribution:</strong> The study shows how converging indicators can strengthen growth interpretation for students with the most significant cognitive disabilities.</p><p><a href="https://brtprojects.org/wp-content/uploads/2026/08/ORExt_Growth_Manuscript_BAR.pdf">Read the original publication</a></p></div></article>
+          <article class="research-story"><div class="photo-placeholder" role="img" aria-label="Research graphic placeholder for the Oregon Extended Assessment linkage and alignment study"><div class="photo-label"><strong>Research graphic</strong>Alignment framework or reviewer-process visual.</div></div><div class="research-story-copy"><div class="story-meta"><span>Alignment</span><span>Essentialized standards</span></div><h3>Testing the links from standards to items</h3><p>Brock Rowley, Sevrina Tindal, Joseph Nese, and Aiden Bagshaw use five structured review phases, reviewer training, and defined rubrics to examine standards, alternate achievement expectations, complexity, accessibility, and field-test items.</p><p><strong>Documented outcome:</strong> Most reviewed standards were strongly linked, item reviews showed strong or sufficient alignment, and the study identified actionable areas for continuous improvement.</p><p><a href="https://brtprojects.org/wp-content/uploads/2025/07/ORExt_Linkage_Alignment_Study_Report_2025.pdf">Read the alignment study</a></p></div></article>
+          <article class="research-story"><div class="photo-placeholder" role="img" aria-label="Publication cover placeholder for a national alternate assessment research report"><div class="photo-label"><strong>Publication cover</strong>Technical Report 2607 cover or figure.</div></div><div class="research-story-copy"><div class="story-meta"><span>National synthesis</span><span>Accountability</span></div><h3>A national view of alternate assessment</h3><p>Brock Rowley, Gerald Tindal, and Dan Farley synthesize state repositories, federal reviews, and national evidence across participation, accessibility, accommodations, technical analysis, accountability, and reporting.</p><p><strong>Meaningful use:</strong> The report provides a common evidence base for comparing state practice and identifying questions for a national assessment center.</p><p><a href="https://brtprojects.org/brt-tech-reports/technical-reports/">Find Technical Report 2607</a></p></div></article>
+          <article class="research-story"><div class="photo-placeholder" role="img" aria-label="Conference photography placeholder showing BRT researchers discussing project findings"><div class="photo-label"><strong>Conference or project moment</strong>BRT researchers discussing findings with educators or research partners.</div></div><div class="research-story-copy"><div class="story-meta"><span>Collaboration</span><span>Applied research</span></div><h3>Research is a shared practice</h3><p>BRT’s work is strengthened by structured review with educators, collaboration with state partners, and technical exchange with research colleagues.</p><p><a href="https://brtprojects.org/behavioral-research-teaching/blog/">Read BRT project news</a></p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section paper" id="services">
+      <div class="container">
+        <div class="section-head"><p class="eyebrow">Five connected service areas</p><h2>What states and partners can work on with BRT.</h2><p>Each area connects a practical assessment decision to relevant methods, deliverables, and published research.</p></div>
+        <div class="services">
+          <article class="service"><span class="service-number">01</span><h3>Participation, Accessibility &amp; Implementation</h3><p>Help every eligible student participate in a defensible assessment system.</p><ul><li>Participation and accommodations evidence</li><li>Alternate-assessment implementation</li></ul><a href="../services/participation-accessibility-implementation.html">Explore participation and access</a></article>
+          <article class="service"><span class="service-number">02</span><h3>Standards, Alignment &amp; Assessment Design</h3><p>Connect intended learning, assessment design, and the evidence items can provide.</p><ul><li>Alignment and essentialized standards</li><li>Blueprints, standard setting, and design review</li></ul><a href="../services/standards-alignment-assessment-design.html">Explore alignment and design</a></article>
+          <article class="service"><span class="service-number">03</span><h3>Psychometrics, Validity &amp; Reliability</h3><p>Examine whether scores support the interpretations and decisions a program needs.</p><ul><li>Validity, reliability, scaling, and linking</li><li>Classification, fairness, and technical studies</li></ul><a href="../services/psychometrics-validity-reliability.html">Explore psychometric evidence</a></article>
+          <article class="service"><span class="service-number">04</span><h3>Reporting, Growth &amp; Data Use</h3><p>Make assessment results more interpretable without losing their technical meaning.</p><ul><li>Growth and longitudinal analysis</li><li>Score interpretation and reporting design</li></ul><a href="../services/reporting-growth-data-use.html">Explore reporting and growth</a></article>
+          <article class="service"><span class="service-number">05</span><h3>Technology Stack &amp; Data Management</h3><p>Build trustworthy paths from assessment data to analysis, reporting, and use.</p><ul><li>Data integration and quality rules</li><li>Technical architecture and reproducible workflows</li></ul><a href="../services/technology-stack-data-management.html">Explore technology and data</a></article>
+        </div>
+        <div class="specialty-links" aria-label="State assessment specialty services"><a href="../services/assessment-forensics-test-security.html">Assessment Forensics &amp; Test Security</a><a href="../services/automated-scoring-evaluation-validation.html">Automated Scoring Evaluation &amp; Validation</a><a href="../services/measurement-fairness-dif-analysis.html">Measurement Fairness &amp; DIF Analysis</a><a href="../services/psychometrics-validity-reliability.html">Advanced IRT &amp; Model Evaluation</a><a href="../services/reporting-growth-data-use.html">Growth &amp; Progress-Monitoring Models</a></div>
+      </div>
+    </section>
+
+    <section class="section specialty" id="specialty">
+      <div class="container specialty-grid">
+        <div class="sticky"><p class="eyebrow">Researcher-led specialty</p><h2>Assessment Forensics &amp; Test Security</h2><p class="specialty-intro">Independent analysis of response patterns, response times, and administration evidence to help assessment programs identify unusual results for structured investigation.</p><p><a href="../services/assessment-forensics-test-security.html">Explore assessment forensics</a></p></div>
+        <div>
+          <div class="deliverables">
+            <article class="deliverable"><h3>Start with the decision</h3><p>Define the security question, available data, comparison groups, thresholds, limitations, and investigation protocol.</p></article>
+            <article class="deliverable"><h3>Examine multiple signals</h3><p>Evaluate response-time and response-pattern evidence, person fit, response similarity, model performance, and false-positive risk.</p></article>
+            <article class="deliverable"><h3>Deliver evidence people can use</h3><p>Provide reproducible analysis, documented uncertainty, alternative explanations, and recommendations for further review.</p></article>
+          </div>
+          <aside class="evidence"><p class="eyebrow">Research connection</p><h3>Cengiz Zopluoglu’s assessment-forensics work</h3><p>Specific research includes simultaneous detection of compromised items and examinees with item preknowledge, response-time modeling, and machine-learning approaches to detection.</p><p><a href="https://doi.org/10.1111/jedm.70030">Read the DOI record: 10.1111/jedm.70030</a></p></aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="life">
+      <div class="container">
+        <div class="section-head"><p class="eyebrow">Life and work at BRT</p><h2>Focused work, shared thinking, and a strong sense of place.</h2><p>Our work takes shape in focused analysis, conversations around a table, collaboration with educators and state partners, and the wider research community of the University of Oregon.</p></div>
+        <div class="life-grid">
+          <div class="photo-placeholder life-main" role="img" aria-label="Photography placeholder for a candid BRT team working session"><div class="photo-label"><strong>Working together</strong>A candid BRT team moment with natural expressions and an editorial feel.</div></div>
+          <div class="life-stack"><div class="photo-placeholder" role="img" aria-label="Photography placeholder for an authentic Eugene or Oregon setting"><div class="photo-label"><strong>Here in Oregon</strong>A recognizable Eugene or Oregon setting with a genuine connection to BRT.</div></div><div class="photo-placeholder" role="img" aria-label="Photography placeholder showing the materials and tools of BRT research"><div class="photo-label"><strong>The work in detail</strong>Hands, notes, data, or tools showing the texture of collaborative research.</div></div></div>
+        </div>
+        <p class="life-caption">The work is technical, but it is never solitary. Questions become stronger through shared attention, practical experience, and room to think together.</p>
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <div class="container contact-grid">
+        <div><p class="eyebrow">Bring us the question</p><h2>Let’s think it through together.</h2><p>Whether you are planning a technical study, working through a peer-review question, or trying to make complex assessment evidence more useful, we would be glad to learn what you are facing.</p><a class="button dark" href="../contact.html">Start a conversation with BRT</a></div>
+        <aside class="contact-note"><h3>A useful first message includes</h3><p>The assessment or program, the decision you need to make, the evidence already available, and the timing you are working within. Please do not send secure student or assessment content.</p></aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div><h2>Behavioral Research and Teaching</h2><p>University of Oregon<br>Eugene, Oregon</p></div>
+      <div><h3>Explore</h3><ul><li><a href="../research.html">Research &amp; Scholarship</a></li><li><a href="../products-services.html">Products &amp; Services</a></li><li><a href="../peer-review-services.html">Peer Review Services</a></li></ul></div>
+      <div><h3>Connect</h3><ul><li><a href="../contact.html">Contact BRT</a></li><li><a href="mailto:brt@uoregon.edu">brt@uoregon.edu</a></li></ul></div>
+    </div>
+  </footer>
+  <!--
+    PHOTOGRAPHY SYSTEM AND PREPARATION NOTES
+    Hero collaboration: 2400 x 1800 px minimum, 4:3 source crop, focal point in center-right safe area.
+    Researcher portraits: 1200 x 900 px minimum, consistent 4:3 landscape crop, eyes near upper third.
+    Research activity and conference moments: 1800 x 1350 px minimum, 4:3 crop with contextual detail.
+    Story publication visuals: 1200 x 1600 px for covers or 1600 x 1200 px for figures; use only approved excerpts.
+    Oregon and life-at-BRT photography: 2000 x 1500 px minimum, 4:3 crop, truthful location captions.
+    Prepare WebP and JPEG fallbacks, target 70-85% quality, strip unnecessary metadata, and avoid upscaling.
+    Supply meaningful alt text for informative images. Use empty alt text only when the adjacent copy fully duplicates the image.
+    Preserve natural color, factual context, and model-release documentation. Do not add or remove people or alter settings.
+  -->
+  <script>
+    const toggle = document.querySelector('.nav-toggle');
+    const nav = document.querySelector('#lab-nav');
+    toggle.addEventListener('click', () => {
+      const open = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!open));
+      nav.dataset.open = String(!open);
+    });
+    nav.addEventListener('click', event => {
+      if (event.target.closest('a')) {
+        toggle.setAttribute('aria-expanded', 'false');
+        nav.dataset.open = 'false';
+      }
+    });
+  </script>
+</body>
+</html>
